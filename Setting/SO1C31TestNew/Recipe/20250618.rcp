@@ -1,0 +1,107 @@
+Hall Calibration	AF Scan
+Drv AF Step	100
+Drv X Step	200
+Drv Y Step	200
+Drv Step Interval AF	40
+Drv Step Interval X	50
+Drv Step Interval Y	50
+Drv Code Min	200
+Drv Code Max	3900
+Cross Axis Cntl	1
+Cross Axis Offset X	2048
+Cross Axis Offset Y	2048
+Plot Range	2048
+Code Range	2048
+Stroke Range	500
+Standby Code	2048
+Jump Step Code	2688
+Settling Criteria	0.05
+Drv Code Min	48
+Drv Code Max	4048
+Cross Axis Cntl	1
+Cross Axis Offset	2048
+Cross Axis Cntl Af	1
+Cross Axis Offset Af	2048
+Plot Range	2048
+Code Range	2048
+Stroke Range	500
+Drv Code Min	48
+Drv Code Max	4048
+Drv Code Min	48
+Drv Code Max	4048
+Cross Axis Cntl	1
+Cross Axis Offset	2048
+Cross Axis Cntl Af	1
+Cross Axis Offset Af	2048
+Plot Range	2048
+Code Range	2048
+Stroke Range	500
+Cross Axis Cntl Af	1
+Cross Axis Offset Af	2048
+Cross Axis Cntl Af	1
+Cross Axis Offset Af	2048
+Hall Cal Cntl	1
+Hall Cal Mode	0
+Move Step	64
+Start Code	0
+End Code	4095
+Move Delay	20
+X EPA Cut Bottom	500
+X EPA Cut Top	500
+Y1 EPA Cut Bottom	500
+Y1 EPA Cut Top	500
+Y2 EPA Cut Bottom	500
+Y2 EPA Cut Top	500
+Linearity Cntl	1
+X Ex EPA Bottom	300
+X Ex EPA Top	300
+Y1 Ex EPA Bottom	300
+Y1 Ex EPA Top	300
+Y2 Ex EPA Bottom	300
+Y2 Ex EPA Top	300
+Loop	1
+Step	5
+Delay	10
+X Chirp from	250
+X Chirp to	50
+X Drv Amplitude	75
+Y Chirp from	250
+Y Chirp to	50
+Y Drv Amplitude	75
+Loop	1
+Step	5
+Delay	10
+X Chirp from	400
+X Chirp to	100
+X Drv Amplitude	60
+Y Chirp from	400
+Y Chirp to	100
+Y Drv Amplitude	60
+X Amp	60
+Y Amp	60
+SIN THD	150
+SIN CNT ERR	1
+SIN FREQ	5
+SIN AMP	58
+SIN CYCL	18
+SIN AXIS	0
+RNG THD	20
+RNG STVT	90
+RNG METM	100
+RNG WSEC	50
+RNG AXIS	0
+MaxCode	1023
+MidCode	512
+MinCode	0
+Loop Count	1
+Delay	60
+I2C Clock	400
+Grab Time Limit	10
+Max Wait after Last Trigger	1000
+Triggered Grab Image Count	10000
+Raw Gain	33
+Gamma	1
+ExposureTime	130
+Edge Band	7
+LEDCurrentL	2.7
+LEDCurrentR	2.7

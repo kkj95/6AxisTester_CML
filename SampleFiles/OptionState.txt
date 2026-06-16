@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Option xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SaveRawData>true</SaveRawData>
+  <ScreenCapture>false</ScreenCapture>
+  <WriteResultToDriverIC>false</WriteResultToDriverIC>
+  <SafeSensor>false</SafeSensor>
+  <AFDirReverse>true</AFDirReverse>
+  <XDirReverse>false</XDirReverse>
+  <YDirReverse>false</YDirReverse>
+  <XYPosReverse>false</XYPosReverse>
+  <SocketSensorUse>false</SocketSensorUse>
+  <settlingGraphVisible>false</settlingGraphVisible>
+  <ContinueTestingOnFail>false</ContinueTestingOnFail>
+  <DryRunMode>false</DryRunMode>
+</Option>
