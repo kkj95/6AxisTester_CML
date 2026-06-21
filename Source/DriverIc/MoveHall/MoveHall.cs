@@ -1,7 +1,4 @@
-﻿using FZ4P.Commons.Helper;
-using FZ4P.DriverIc.MoveHall.MoveTargetData;
-using FZ4P.DriverIc.SlaveID.Context;
-using FZ4P.DriverIc.SlaveID.ResultData;
+﻿using FZ4P.DriverIc.MoveHall.MoveTargetData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace FZ4P.DriverIc.MoveHall
 {
-    public class MoveHall_12Bit : IMoveHall
+    public class MoveHall : IMoveHall
     {
         private readonly IDlnInterface _dln;
         private readonly IAxisMoveTargetResolver _axisResolver;
 
         private int slaveAddr;
         private int memoryAddr;
-        public MoveHall_12Bit(IDlnInterface dln , IAxisMoveTargetResolver axisResolver)
+
+        public MoveHall(IDlnInterface dln, IAxisMoveTargetResolver axisResolver)
         {
             _dln = dln;
             _axisResolver = axisResolver;
@@ -25,10 +23,10 @@ namespace FZ4P.DriverIc.MoveHall
 
         public bool Move(int ch, string name, int pos, bool openLoop = false)
         {
-            int data = pos << 4;
+            int data = pos;
             byte[] buff = new byte[2] { (byte)(data >> 8), (byte)(data % 256) };
 
-            var target =_axisResolver.Resolve(name);
+            var target = _axisResolver.Resolve(name);
             slaveAddr = target.SlaveAddr;
             memoryAddr = target.MemoryAddr;
 
@@ -36,4 +34,5 @@ namespace FZ4P.DriverIc.MoveHall
             return true;
         }
     }
+
 }

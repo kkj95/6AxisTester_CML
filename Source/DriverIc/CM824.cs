@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FZ4P.DriverIc.ReadHall
+namespace FZ4P.DriverIc
 {
-    public interface IReadHall
+    internal class CM824
     {
-        int Read(int ch, string name);
     }
 }

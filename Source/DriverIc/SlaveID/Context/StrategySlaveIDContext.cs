@@ -12,6 +12,7 @@ namespace FZ4P.DriverIc.SlaveID.Context
         Type2810,
         Type1C86,
         Type1C87,
+        TypeCM824
     };
 
     public class StrategySlaveIDContext
@@ -30,6 +31,9 @@ namespace FZ4P.DriverIc.SlaveID.Context
                     break;
                 case ActuatorType.Type1C87:
                     Executor = new Strategy_SlaveID_1C87();
+                    break;
+                case ActuatorType.TypeCM824:
+                    Executor = new Strategy_SlaveID_CM824();
                     break;
                 default
                     : return null;

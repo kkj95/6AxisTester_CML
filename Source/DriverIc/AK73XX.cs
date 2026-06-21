@@ -3,8 +3,10 @@ using FZ4P.Commons.Enums;
 using FZ4P.Commons.Helper;
 using FZ4P.DriverIc.Interfaces;
 using FZ4P.DriverIc.MoveHall.Context;
+using FZ4P.DriverIc.MoveHall.Parameters;
 using FZ4P.DriverIc.ReadHall.Context;
 using FZ4P.DriverIc.SlaveID.Context;
+using FZ4P.DriverIc.SlaveID.ResultData;
 using Modules.Helper;
 using OpenCvSharp.Dnn;
 using OpenCvSharp.Flann;
@@ -12,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,9 +27,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace FZ4P
 {
-    public class AK73XX : IAK73XX, IDriverIC_AF_Function,IDriverIC_OIS_Function, IDriverIC_FRA_Function
+    public class AK73XX : IAK73XX, IDriverIC_AF_Function, IDriverIC_OIS_Function, IDriverIC_FRA_Function
     {
-        
+        private ActuatorType actuatorType;
         public Process Process { get { return STATIC.Process; } }
         public Condition Condition { get { return STATIC.Rcp.Condition; } }
         public IDlnInterface Dln { get { return STATIC.Dln; } }
@@ -62,42 +65,43 @@ namespace FZ4P
         public AK73XX()
         {
             SelectSlaveID = new StrategySlaveIDContext();
+            actuatorType = ActuatorType.Type1C87;
 
             Name = "AK73XX";
-            var slaveID = SelectSlaveID.GetSlaveID(ActuatorType.Type1C87);
+            var baseSlaveID = SelectSlaveID.GetSlaveID(actuatorType);
+            var slaveID = CastingHelper.SlaveIDCasting<ActuatorSlaveID_SO1C87>(baseSlaveID);
 
             // AFOriginAddr = 0x0C;
-            AFOriginAddr = slaveID.AFOriginAddr;
+            AFOriginAddr = slaveID.SlaveID_AF.AFOriginAddr;
 
-            XOriginAddr = slaveID.XOriginAddr;
-            Y1OriginAddr = slaveID.Y1OriginAddr;
-            Y2OriginAddr = slaveID.Y2OriginAddr;
+            XOriginAddr = slaveID.SlaveID_OISX.XOriginAddr;
+            Y1OriginAddr = slaveID.SlaveID_OISY.Y1OriginAddr;
+            Y2OriginAddr = slaveID.SlaveID_OISY.Y2OriginAddr;
 
-            AF_Addr = slaveID.AF_Addr;
-            XSlaveAddr = slaveID.XSlaveAddr;
-            Y1SlaveAddr = slaveID.Y1SlaveAddr;
-            Y2SlaveAddr = slaveID.Y2SlaveAddr;
-            FRA_Addr = slaveID.FRA_Addr;
+            AF_Addr = slaveID.SlaveID_AF.AF_Addr;
+            XSlaveAddr = slaveID.SlaveID_OISX.XSlaveAddr;
+            Y1SlaveAddr = slaveID.SlaveID_OISY.Y1SlaveAddr;
+            Y2SlaveAddr = slaveID.SlaveID_OISY.Y2SlaveAddr;
+            FRA_Addr = slaveID.SlaveID_FRA.FRA_Addr;
 
             // FRA_AFSlaveAddr = 0x50;
-            FRA_AFSlaveAddr = slaveID.FRA_AFSlaveAddr;
+            FRA_AFSlaveAddr = slaveID.SlaveID_FRA.FRA_AFSlaveAddr;
 
-            FRA_XSlaveAddr = slaveID.FRA_XSlaveAddr;
-            FRA_Y1SlaveAddr = slaveID.FRA_Y1SlaveAddr; 
-            FRA_Y2SlaveAddr = slaveID.FRA_Y2SlaveAddr;
+            FRA_XSlaveAddr = slaveID.SlaveID_FRA.FRA_XSlaveAddr;
+            FRA_Y1SlaveAddr = slaveID.SlaveID_FRA.FRA_Y1SlaveAddr; 
+            FRA_Y2SlaveAddr = slaveID.SlaveID_FRA.FRA_Y2SlaveAddr;
 
-            AF_ADC_Addr = slaveID.AF_ADC_Addr;
+            AF_ADC_Addr = slaveID.SlaveID_AF.AF_ADC_Addr;
             OIS_ADC_Addr = slaveID.OIS_ADC_Addr;
 
-            AF_MID_CODE = slaveID.AF_MID_CODE;
-            AF_MAX_CODE = slaveID.AF_MAX_CODE;
-            AF_MIN_CODE = slaveID.AF_MIN_CODE;
+            AF_MID_CODE = slaveID.moveCode.AF_MID_CODE;
+            AF_MAX_CODE = slaveID.moveCode.AF_MAX_CODE;
+            AF_MIN_CODE = slaveID.moveCode.AF_MIN_CODE;
 
-            OIS_MIN_CODE = slaveID.OIS_MIN_CODE;
-            OIS_MID_CODE = slaveID.OIS_MID_CODE;
-            OIS_MAX_CODE = slaveID.OIS_MAX_CODE;
+            OIS_MIN_CODE = slaveID.moveCode.OIS_MIN_CODE;
+            OIS_MID_CODE = slaveID.moveCode.OIS_MID_CODE;
+            OIS_MAX_CODE = slaveID.moveCode.OIS_MAX_CODE;
         }
-
 
         #region AF Function
         public bool ChangeSlaveAddr(int ch)
@@ -522,27 +526,21 @@ namespace FZ4P
         }
         public bool Move(int ch, string name, int pos, bool openLoop = false)
         {
-            var context = new MoveHallContext(IC_BITUSE.BIT_13, Dln);
+            var param = new MoveHallContextParam()
+            {
+                actuatorType = actuatorType,
+            };
+            var context = new MoveHallContext(IC_BITUSE.BIT_13, Dln, param);
             return context.Move(ch, name, pos, openLoop);
         }
         public int ReadHall(int ch, string name)
         {
-            //int addr = 0x00;
+            var param = new MoveHallContextParam()
+            {
+                actuatorType = actuatorType,
+            };
 
-            //if (name.Contains("X")) addr = XSlaveAddr;
-            //else if (name.Contains("Y2")) addr = Y2SlaveAddr;
-            //else if (name.Contains("Y1") || name.Contains("Y")) addr = Y1SlaveAddr;
-
-
-            //byte[] data = new byte[2];
-
-            //if (addr != 0x00) Dln.ReadArray(ch, addr, 0x84, data);
-            //if (name == "Y2" && Y2SlaveAddr != 0x00) Dln.ReadArray(ch, addr, 0x84, data);
-
-
-            //return ((data[0] << 8) + data[1]) >> 4;
-
-            var context = new ReadHallContext(IC_BITUSE.BIT_13, Dln);
+            var context = new ReadHallContext(IC_BITUSE.BIT_13, Dln, param);
             return context.ReadHall(ch, name);
         }
         public int ReadHallOpenLoop(int ch, string name)

@@ -12,13 +12,13 @@ namespace FZ4P.DriverIc.Interfaces
         bool ChangeSlaveAddr(int ch);
         bool AF_Memory_Update(int ch, int mode);
         void AF_IC_Data(int ch);
-        bool ICReset(int ch);
+        bool ICReset(int ch);                               //IC Reset 
         void AFSleep(int ch);
-        void AFOnOff(int ch, bool isOn);
-        void AFMove(int ch, int code);
+        void AFOnOff(int ch, bool isOn);                    //서보 OnOff
+        void AFMove(int ch, int code);                      //모션 구동
 
         void RegisterZeroSet(int iCh, int TargetSlaveID, byte address);
-        int ReadAFHall(int ch);
+        int ReadAFHall(int ch);                             //모션값 읽기
         #endregion
     }
 }

@@ -1,7 +1,6 @@
 ﻿using FZ4P.DriverIc.ReadHall.ReadTargetData;
-using FZ4P.DriverIc.SlaveID.Context;
-using FZ4P.DriverIc.SlaveID.ResultData;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FZ4P.DriverIc.ReadHall
 {
-    public class ReadHall_13bit : IReadHall
+    public class ReadHall : IReadHall
     {
         private readonly IDlnInterface _dln;
         private readonly IAxisReadTargetResolver _resolver;
@@ -17,10 +16,10 @@ namespace FZ4P.DriverIc.ReadHall
         private int slaveAddr;
         private int memoryAddr;
 
-        public ReadHall_13bit(IDlnInterface dln, IAxisReadTargetResolver resolver)
+        public ReadHall(IDlnInterface dln, IAxisReadTargetResolver resolver)
         {
             _dln = dln;
-            _resolver = resolver;
+            resolver = _resolver;
         }
 
         public int Read(int ch, string name)
@@ -31,9 +30,9 @@ namespace FZ4P.DriverIc.ReadHall
             slaveAddr = target.SlaveAddr;
             memoryAddr = target.MemoryAddr;
 
-            _dln.ReadArray(ch, slaveAddr, memoryAddr, data);
+            if (slaveAddr != 0x00) _dln.ReadArray(ch, slaveAddr, memoryAddr, data);
 
-            return ((data[0] << 8) + data[1]) >> 3;
+            return ((data[0] << 8) + data[1]);
         }
     }
 }
